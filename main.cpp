@@ -2,7 +2,6 @@
 #include "World.h"
 #include "Organism.h"
 
-
 int main() {
 
     size_t x, y;

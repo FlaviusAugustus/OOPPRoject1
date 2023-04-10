@@ -15,7 +15,6 @@ World::World(size_t sizeX, size_t sizeY) : sizeX(sizeX), sizeY(sizeY) {
             worldArr[i][j] = ' ';
 
         }
-
     }
 }
 
@@ -61,13 +60,14 @@ void World::addEntity(Organism* entity) {
 
 void World::processTurn() {
 
-    std::sort(entities.begin(), entities.end(), compareByInitiative);
+    sortOrganisms();
 
     for (Organism* ent: entities) {
 
         ent->action(*this);
         int index = isCollision(ent);
         if(index != -1) { ent->collision(*this, entities[index]); }
+
     }
 }
 
@@ -77,9 +77,28 @@ int World::isCollision(Organism *ent) {
                               [ent](const Organism* o){ return o->getpos() == ent->getpos() && o != ent;});
 
     //if element is not found find_if returns entities.end()
-    if(other == entities.end() && ent->getpos() != entities[entities.capacity() -1]->getpos()) { return -1;}
+    if(other == entities.end() && ent->getpos() != entities.back()->getpos()) { return -1;}
     int index = std::distance(entities.begin(), other);
 
     return index;
+
+}
+
+void World::sortOrganisms() {
+
+    auto comp = [](const Organism* o1,const Organism* o2) -> int {
+
+        if(o1->getInitiative() != o2->getInitiative()) {
+
+            return o1->getInitiative() > o2->getInitiative();
+
+        }
+        else {
+
+            return o1->getAge() > o2->getAge();
+
+        }};
+
+    std::sort(entities.begin(), entities.end(), comp);
 
 }

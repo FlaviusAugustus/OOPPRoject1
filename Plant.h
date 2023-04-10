@@ -6,7 +6,6 @@ class Plant : Organism {
     protected:
 
     int growthProbability;
-    int growthAttempts;
 
     Plant();
 

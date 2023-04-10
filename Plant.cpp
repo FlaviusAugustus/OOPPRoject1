@@ -6,26 +6,15 @@ void Plant::collision(World &world, Organism* other) {}
 
 void Plant::action(World &world) {
 
-    for(int i = 0; i < growthAttempts; i++) {
+    if (rand() % 100 > growthProbability) {
 
-        if (rand() % 100 > growthProbability) {
+        std::pair<int, int> newPlantPos = getRandomPosNearby(world);
 
-            bool isCorectPos = false;
-            int posX;
-            int posY;
+        if(newPlantPos.first == -1) { return; }
 
-            while (!isCorectPos) {
+        Organism* newPlant = getSelf();
+        newPlant->setPos(newPlantPos);
+        world.addEntity(newPlant);
 
-                posX = rand() % 4;
-                posY = rand() % 4;
-
-                if(world.isSpace(posX, posY)) {
-
-                    //world.addEntity(new ));
-                    isCorectPos = true;
-
-                }
-            }
-        }
     }
 }
